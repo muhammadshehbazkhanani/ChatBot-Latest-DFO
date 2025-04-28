@@ -3,7 +3,7 @@ import { DashboardComponent } from './dashboard.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfigComponent } from '../config/config.component';
-import { ChatComponent } from '../chat/chat.component';
+import { ChatComponent } from '../../chat/chat.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 describe('DashboardComponent', () => {

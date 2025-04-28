@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfigComponent } from '../config/config.component';
-import { ChatComponent } from '../chat/chat.component';
+import { ChatComponent } from '../../chat/chat.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({

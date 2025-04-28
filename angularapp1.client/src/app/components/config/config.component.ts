@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { ConfigService } from '../services/config.service';
+import { ConfigService } from '../../services/config.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
