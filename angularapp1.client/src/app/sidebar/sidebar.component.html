@@ -1,0 +1,29 @@
+<nav class="h-screen w-fit bg-slate-950 p-4 flex flex-col items-center gap-2">
+  <!-- Logo -->
+  <img ngSrc="assets/images/logo.png"
+       alt="Logo"
+       width="300"
+       height="300"
+       class="mb-4">
+
+  <!-- Sidebar Icons -->
+  <ng-container *ngFor="let icon of icons; index as i">
+    <button (click)="handleSelection(i)"
+            [ngClass]="{
+          'bg-red-500 scale-105': selected === i,
+          'bg-slate-800 hover:bg-slate-700': selected !== i
+        }"
+            class="p-3 text-xl rounded-md transition-all flex items-center ">
+      <!-- Use Angular Material Icon -->
+      <mat-icon class="text-white">{{ icon }}</mat-icon>
+    </button>
+  </ng-container>
+
+  <!-- Logout Icon -->
+  <div class="mt-auto">
+    <button (click)="logout()"
+            class="p-3 text-xl rounded-md transition-all flex items-center bg-slate-800 hover:bg-slate-700">
+      <mat-icon class="text-white">logout</mat-icon>
+    </button>
+  </div>
+</nav>

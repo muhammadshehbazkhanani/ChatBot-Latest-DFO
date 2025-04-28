@@ -1,0 +1,127 @@
+<main class="bg-white max-h-screen p-4 md:p-8">
+      
+
+  <div class="h-full mx-auto max-w-7xl ">
+<!-- Header -->
+<div class="mb-6">
+  <h1 class="text-lg md:text-lg font-bold text-gray-800">Test Chat</h1>
+  <p class="text-gray-600 text-sm mt-1">Try out your bot through a conversation</p>
+</div>
+    <div class="flex max-h-full min-h-[35rem] ">
+  
+  <!-- Column 1: Bot List -->
+  <div class="w-1/4 shadow-sm bg-white border border-gray-200 overflow-y-auto">
+    <div class="p-4 border-b border-gray-200 bg-gray-50">
+      <h2 class="text-lg font-semibold text-gray-800">Your Bots</h2>
+    </div>
+    <div class="divide-y divide-gray-200">
+      <!-- Bot List Items -->
+        <div *ngFor="let bot of bots" 
+             class="bot-list-item p-4 hover:bg-gray-50 cursor-pointer transition-colors border-l-4"
+             [class.border-red-400]="selectedBot?.Id === bot.Id"
+             [class.bg-gray-50]="selectedBot?.Id === bot.Id"
+             (click)="selectBot(bot)">
+             <div class="flex items-center space-x-3">
+          <div class="bg-red-100 p-2 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-900">{{bot.AppName}}</h3>
+          </div>
+        </div>
+        </div>
+  
+      
+      <!-- Add more bots as needed -->
+    </div>
+  </div>
+
+  <!-- Column 2: Chat Interface -->
+  <div class="flex-1 flex flex-col">
+    <!-- Chat Header -->
+    <div class="bg-white border border-gray-200 p-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-red-100 p-2 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="font-semibold text-gray-900">{{ selectedBot?.AppName || 'Select a bot' }}</h2>
+          <p class="text-sm text-green-600">Active</p>
+        </div>
+      </div>
+      <button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="flex-1 p-4 overflow-y-auto bg-gray-50">
+      <div class="space-y-4 h-[20rem]">
+        @for (message of messages; track $index) {
+        <div class="flex items-start" [class.justify-end]="message.isUser">
+          <div [class]="message.isUser
+          ? 'bg-red-500 text-white p-3 rounded-2xl rounded-tr-none max-w-xs lg:max-w-md message-container'
+          : 'bg-slate-300 text-gray-800 p-3 rounded-2xl rounded-tl-none max-w-xs lg:max-w-md message-container'"
+               [class.visible]="true">
+            <!-- Multi-line support with pre formatting -->
+            <pre class="whitespace-pre-wrap break-words">{{ message.text }}</pre>
+
+            <div class="flex items-center justify-end gap-2 mt-1">
+              @if (!message.isUser && message.branch) {
+              <span class="text-xs px-2 py-1 rounded-full"
+                    [class.bg-blue-100]="message.branch === 'PromptAndCollectNextResponse'"
+                    [class.text-blue-800]="message.branch === 'PromptAndCollectNextResponse'"
+                    [class.bg-green-100]="message.branch === 'ReturnControlToScript'"
+                    [class.text-green-800]="message.branch === 'ReturnControlToScript'"
+                    [class.bg-red-100]="message.branch === 'userInputTimeOut'"
+                    [class.text-red-800]="message.branch === 'userInputTimeOut'">
+                {{ message.branch }}
+              </span>
+              }
+              <p class="text-xs"
+                 [class.text-white]="message.isUser"
+                 [class.text-gray-500]="!message.isUser">
+                {{ message.timestamp | date: 'shortTime' }}
+              </p>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+
+    <!-- Input Area  -->
+    <div class="border border-gray-200 p-4 bg-white">
+      <div class="relative flex items-center">
+        <input type="text"
+                 id="userInput"
+               [(ngModel)]="userMessage"
+               (keyup.enter)="sendMessage()"
+               placeholder="Type your message..."
+               maxlength="1000"
+               class="w-full py-3 text-slate-700 px-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent pr-12" />
+        <div class="absolute right-2 flex space-x-1">
+          <button (click)="sendMessage()" class="p-2 text-red-500 hover:text-red-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+          </button>
+          <button (click)="sendMessage()" id="sendMessage" class="p-2 text-red-500 hover:text-red-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</main>

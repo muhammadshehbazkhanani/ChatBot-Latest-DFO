@@ -1,0 +1,177 @@
+<section class="grid min-h-screen grid-cols-1 bg-slate-50 md:grid-cols-[1fr,_400px] lg:grid-cols-[1fr,_1000px]">
+
+    <!-- Form Section -->
+    <div class="flex items-center justify-center pb-4 pt-20 md:py-20">
+      <div class="mx-auto my-auto max-w-lg px-4 md:pr-0">
+        <h1 class="mb-2 text-center text-4xl font-semibold">Welcome Back</h1>
+        <p class="mb-8 text-center">Login to configure your chat bot</p>
+  
+        <form class="w-full">
+          <div class="mb-2 w-full">
+            <label for="email-input" class="mb-1 inline-block text-sm font-medium">Email<span class="text-red-600">*</span></label>
+            <input [(ngModel)]="SignupObj.Email"
+            name="email" id="email-input" type="email" placeholder="Enter your email" class="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-indigo-600" required />
+          </div>
+  
+          <div class="mb-2 w-full">
+            <label for="password-input" class="mb-1 inline-block text-sm font-medium">Password<span class="text-red-600">*</span></label>
+            <input  [(ngModel)]="SignupObj.Password"
+            name="Password" id="password-input" type="password" placeholder="Enter your password" class="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-indigo-600" required />
+          </div>
+
+          
+          <div class="mb-2 w-full">
+            <label for="confirm-password-input" class="mb-1 inline-block text-sm font-medium">Confirm Password<span class="text-red-600">*</span></label>
+            <input id="confirm-password-input" type="password" placeholder="Enter your password" class="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-indigo-600" required />
+          </div>
+
+          <div>
+            <p class="text-xs">Already have an account? 
+            <a className="text-black underline text-blue-500" href="/login">
+              Login
+            </a>
+          </p> 
+          </div>
+  
+          <div class="my-4 flex w-full items-start gap-1.5">
+            <input type="checkbox" id="terms-checkbox" class="h-4 w-4 accent-indigo-600" required />
+            <label for="terms-checkbox" class="text-xs">By signing up, I agree to the terms and conditions, privacy policy, and cookie policy</label>
+          </div>
+
+          
+  
+          <button type="button" (click)="onSignup()" class="mb-1.5 w-full rounded bg-red-500 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-red-600"> Register </button>
+  
+        
+        </form>
+      </div>
+    </div>
+  
+    <!-- Supplemental Content Section -->
+    <div
+    class="group sticky top-4 m-4 h-80 overflow-hidden rounded-3xl rounded-tl-[4rem] bg-slate-950 md:h-[calc(100vh_-_2rem)]"
+  >
+  <img
+  alt="ChatApp Robot Image"
+  ngSrc="assets/images/robot.jpg"
+  fill
+  class="bg-white object-cover transition-all duration-500 group-hover:scale-105 group-hover:opacity-50"
+/>
+    <div class="absolute right-2 top-4 z-10">
+      <svg
+        width="32"
+        height="32"
+        class="rotate-45 text-6xl text-indigo-200 opacity-0 transition-all duration-500 group-hover:rotate-0 group-hover:opacity-100"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <path d="M14 4L10 8H13V12H16V8H17L14 4Z" fill="currentColor"></path>
+      </svg>
+    </div>
+
+    <div
+      class="absolute inset-0 flex flex-col items-start justify-end bg-gradient-to-t from-slate-950/90 to-slate-950/0 p-8"
+    >
+      <h2
+        class="mb-2 text-3xl font-semibold leading-[1.25] text-white lg:text-4xl"
+      >
+        Smart AI Assistant<br />Ready to Help
+      </h2>
+      <p class="mb-6 max-w-md text-sm text-slate-300">
+        Experience seamless conversations with our intelligent bot. Configure,
+        test, and deploy in minutes.
+      </p>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center">
+          <img
+          src="assets/images/userOne.avif"
+            alt="Avatar"
+            class="h-8 w-8 rounded-full border-[1px] border-slate-100 object-cover shadow-inner"
+          />
+          <img
+            src="assets/images/userTwo.avif"
+            alt="Avatar"
+            class="-ml-4 h-8 w-8 rounded-full border-[1px] border-slate-100 object-cover shadow-inner"
+          />
+          <img
+            src="assets/images/userThree.avif"
+            alt="Avatar"
+            class="-ml-4 h-8 w-8 rounded-full border-[1px] border-slate-100 object-cover shadow-inner"
+          />
+          <img
+            src="assets/images/userFour.avif"
+            alt="Avatar"
+            class="-ml-4 h-8 w-8 rounded-full border-[1px] border-slate-100 object-cover shadow-inner"
+          />
+          <img
+            src="assets/images/userFive.avif"
+            alt="Avatar"
+            class="-ml-4 h-8 w-8 rounded-full border-[1px] border-slate-100 object-cover shadow-inner"
+          />
+        </div>
+        <div>
+          <div class="flex gap-0.5">
+            <svg
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="text-yellow-300"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 12.9l3.6 2.2-1-4.2 3.4-2.8-4.3-.4L8 0 6.3 7.8l-4.3.4 3.4 2.8-1 4.2z"
+              ></path>
+            </svg>
+            <svg
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="text-yellow-300"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 12.9l3.6 2.2-1-4.2 3.4-2.8-4.3-.4L8 0 6.3 7.8l-4.3.4 3.4 2.8-1 4.2z"
+              ></path>
+            </svg>
+            <svg
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="text-yellow-300"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 12.9l3.6 2.2-1-4.2 3.4-2.8-4.3-.4L8 0 6.3 7.8l-4.3.4 3.4 2.8-1 4.2z"
+              ></path>
+            </svg>
+            <svg
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="text-yellow-300"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 12.9l3.6 2.2-1-4.2 3.4-2.8-4.3-.4L8 0 6.3 7.8l-4.3.4 3.4 2.8-1 4.2z"
+              ></path>
+            </svg>
+            <svg
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="text-yellow-300"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 12.9l3.6 2.2-1-4.2 3.4-2.8-4.3-.4L8 0 6.3 7.8l-4.3.4 3.4 2.8-1 4.2z"
+              ></path>
+            </svg>
+            <span class="ml-2 text-sm text-white">5.0</span>
+          </div>
+          <p class="text-xs text-slate-300">from over 100,000 reviews</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+  

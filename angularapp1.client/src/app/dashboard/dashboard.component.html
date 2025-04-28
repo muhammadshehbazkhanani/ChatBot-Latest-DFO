@@ -1,0 +1,27 @@
+<div class="flex flex-col md:flex-row h-screen bg-slate-900 text-slate-100 overflow-hidden">
+  <!-- Sidebar -->
+  <app-sidebar class="md:w-[80px] w-full md:h-full"
+               [selected]="selected"
+               (select)="setSelected($event)"></app-sidebar>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Top Bar -->
+    <div class="h-[35px] m-4 flex items-center px-4 text-sm font-semibold text-white rounded border-2 border-dashed border-slate-600 bg-slate-800">
+      {{ selected === 0 ? 'Configuration Pannel' : selected === 1 ? 'Chat Pannel' : 'Dashboard' }}
+    </div>
+
+
+    <!-- Page Content -->
+    <div class="flex-1 overflow-auto m-4 rounded border-2 border-dashed border-slate-600 bg-white p-4">
+      <ng-container [ngSwitch]="selected">
+        <app-config *ngSwitchCase="0"></app-config>
+        <app-chat *ngSwitchCase="1"></app-chat>
+        <p *ngSwitchDefault>Select a page</p>
+      </ng-container>
+    </div>
+  </div>
+  <div id="brandembassy-chat-container"
+       style="position: fixed; bottom: 20px; right: 20px; width: 350px; height: 500px; z-index: 9999;">
+    </div>
+  </div>
