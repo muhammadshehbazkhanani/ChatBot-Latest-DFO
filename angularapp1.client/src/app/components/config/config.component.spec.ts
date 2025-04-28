@@ -1,7 +1,7 @@
 // // src/app/config/config.component.spec.ts
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ConfigComponent } from './config.component';
-import { ConfigService } from '../services/config.service';
+import { ConfigService } from '../../services/config.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
