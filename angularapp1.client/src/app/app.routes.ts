@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { ChatComponent } from './chat/chat.component';
-import { ConfigComponent } from './config/config.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { ConfigComponent } from './components/config/config.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
