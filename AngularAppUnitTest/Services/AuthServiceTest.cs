@@ -156,5 +156,96 @@ namespace AngularApp1.Server.Tests
             Assert.False(result.Success);
             Assert.Equal("User already exists with this email.", result.Message);
         }
+        [Fact]
+        public async Task AuthenticateAsync_InvalidPassword_ThrowsAuthenticationException()
+        {
+            // Arrange
+            var plainPassword = "wrongPassword";
+            var salt = "testSalt";
+            var correctPassword = "correctPassword";
+            var hashedPassword = HashPasswordForTest(correctPassword, salt);
+
+            var request = new LoginRequest
+            {
+                Email = "user@example.com",
+                Password = plainPassword
+            };
+
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = request.Email,
+                Password = hashedPassword,
+                Salt = salt,
+                Role = "user"
+            };
+
+            _mockUserRepository.Setup(r => r.GetByEmailAsync(request.Email))
+                .ReturnsAsync(user);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<AuthenticationException>(() =>
+                _authService.AuthenticateAsync(request));
+        }
+        [Fact]
+        public async Task AuthenticateAsync_TokenGenerationFails_ThrowsAuthenticationException()
+        {
+            // Arrange
+            var password = "password";
+            var salt = "salt";
+            var hashedPassword = HashPasswordForTest(password, salt);
+
+            var request = new LoginRequest
+            {
+                Email = "failtoken@example.com",
+                Password = password
+            };
+
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = request.Email,
+                Password = hashedPassword,
+                Salt = salt,
+                Role = "user"
+            };
+
+            _mockUserRepository.Setup(r => r.GetByEmailAsync(request.Email))
+                .ReturnsAsync(user);
+            _mockTokenService.Setup(t => t.GenerateTokenAsync(user))
+                .ThrowsAsync(new Exception("Token service error"));
+
+            // Act & Assert
+            await Assert.ThrowsAsync<AuthenticationException>(() =>
+                _authService.AuthenticateAsync(request));
+        }
+        [Fact]
+        public async Task GenerateTokenAsync_ValidUser_ReturnsToken()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = "tokenuser@example.com"
+            };
+
+            _mockConfiguration.Setup(c => c["JwtSettings:SecretKey"])
+                .Returns("supersecretkey123456789012345678901234"); // at least 32 chars
+
+            // Act
+            var token = await _authService.GenerateTokenAsync(user);
+
+            // Assert
+            Assert.False(string.IsNullOrEmpty(token));
+        }
+        [Fact]
+        public async Task GenerateRefreshTokenAsync_ReturnsNonEmptyToken()
+        {
+            // Act
+            var refreshToken = await _authService.GenerateRefreshTokenAsync();
+
+            // Assert
+            Assert.False(string.IsNullOrEmpty(refreshToken));
+        }
     }
 }

@@ -9,6 +9,9 @@ using AngularApp1.Server.Models.Responses;
 using AngularApp1.Server.Services.Interfaces;
 using AngularApp1.Server.Exceptions;
 using AngularApp1.Server.Models;
+using System;
+using Newtonsoft.Json.Linq;
+
 
 namespace AngularAppUnitTest.Controllers
 {
@@ -28,123 +31,105 @@ namespace AngularAppUnitTest.Controllers
         [Fact]
         public async Task Register_ReturnsOk_WhenRegistrationSuccessful()
         {
-            // Arrange
             var request = new RegisterRequest();
             _mockAuthService.Setup(x => x.RegisterAsync(request))
                 .ReturnsAsync(new AuthResult { Success = true, Message = "Registered" });
 
-            // Act
             var result = await _controller.Register(request);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.True((bool)okResult.Value.GetType().GetProperty("result")?.GetValue(okResult.Value, null));
+            var json = JObject.FromObject(okResult.Value!);
+            Assert.True(json["result"]!.Value<bool>());
+            Assert.Equal("Registered", json["message"]!.Value<string>());
         }
 
         [Fact]
         public async Task Register_ReturnsBadRequest_WhenRegistrationFails()
         {
-            // Arrange
             var request = new RegisterRequest();
             _mockAuthService.Setup(x => x.RegisterAsync(request))
-                .ReturnsAsync(new AuthResult { Success = false, Message = "Email exists" });
+                .ReturnsAsync(new AuthResult { Success = false, Message = "Email already exists" });
 
-            // Act
             var result = await _controller.Register(request);
 
-            // Assert
             var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.False((bool)badRequest.Value.GetType().GetProperty("result")?.GetValue(badRequest.Value, null));
+            var json = JObject.FromObject(badRequest.Value!);
+            Assert.False(json["result"]!.Value<bool>());
+            Assert.Equal("Email already exists", json["message"]!.Value<string>());
         }
+
 
         [Fact]
         public async Task Login_ReturnsOk_WhenCredentialsValid()
         {
-            // Arrange
-            var request = new LoginRequest
+            var request = new LoginRequest { Email = "test@test.com", Password = "pass" };
+            var response = new LoginResponse
             {
-                Email = "user@example.com", 
-                Password = "password123"    
-            };
-            var loginResponse = new LoginResponse
-            {
-                Success = true, 
+                Success = true,
                 Message = "Login success",
-                Token = "fake-jwt-token",
-                RefreshToken = "fake-refresh-token",
-                Expiration = DateTime.UtcNow.AddHours(1)
+                Token = "token",
+                RefreshToken = "refresh",
+                Expiration = DateTime.UtcNow.AddMinutes(30)
             };
-            _mockAuthService.Setup(x => x.AuthenticateAsync(request))
-                .ReturnsAsync(loginResponse);
 
-            // Act
+            _mockAuthService.Setup(x => x.AuthenticateAsync(request)).ReturnsAsync(response);
+
             var result = await _controller.Login(request);
 
-            // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var value = Assert.IsType<LoginResponse>(okResult.Value);
-            Assert.True(value.Success); 
+            var loginResponse = Assert.IsType<LoginResponse>(okResult.Value);
+            Assert.True(loginResponse.Success);
+            Assert.Equal("Login success", loginResponse.Message);
         }
 
         [Fact]
-        public async Task Login_ReturnsBadRequest_WhenAuthExceptionThrown()
+        public async Task Login_ReturnsBadRequest_WhenAuthenticationExceptionThrown()
         {
-            // Arrange
-            var request = new LoginRequest
-            {
-                Email = "user@example.com", 
-                Password = "password123"    
-            };
+            var request = new LoginRequest { Email = "test@test.com", Password = "pass" };
             _mockAuthService.Setup(x => x.AuthenticateAsync(request))
                 .ThrowsAsync(new AuthenticationException("Custom auth error"));
 
-            // Act
             var result = await _controller.Login(request);
 
-            // Assert
             var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Contains("Custom auth error", badRequest.Value.ToString());
+            var json = JObject.FromObject(badRequest.Value!);
+            Assert.False(json["result"]!.Value<bool>());
+            Assert.Equal("Custom auth error", json["message"]!.Value<string>());
         }
+
 
         [Fact]
-        public async Task Login_ReturnsBadRequest_WhenInvalidCredentials()
+        public async Task Login_ReturnsBadRequest_WhenInvalidCredentialsException()
         {
-            // Arrange
-            var request = new LoginRequest
-            {
-                Email = "user@example.com", 
-                Password = "password123"    
-            };
+            var request = new LoginRequest { Email = "test@test.com", Password = "pass" };
             _mockAuthService.Setup(x => x.AuthenticateAsync(request))
-                .ThrowsAsync(new System.Exception("Invalid credentials"));
+                .ThrowsAsync(new Exception("Invalid credentials"));
 
-            // Act
             var result = await _controller.Login(request);
 
-            // Assert
             var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Contains("Invalid credentials", badRequest.Value.ToString());
+            var json = JObject.FromObject(badRequest.Value!);
+            Assert.False(json["result"]!.Value<bool>());
+            Assert.Equal("Invalid credentials", json["message"]!.Value<string>());
         }
+
 
         [Fact]
         public async Task Login_Returns500_WhenUnhandledException()
         {
-            // Arrange
-            var request = new LoginRequest
-            {
-                Email = "user@example.com",  
-                Password = "password123"    
-            };
+            var request = new LoginRequest { Email = "test@test.com", Password = "pass" };
             _mockAuthService.Setup(x => x.AuthenticateAsync(request))
-                .ThrowsAsync(new System.Exception("Unexpected error"));
+                .ThrowsAsync(new Exception("Something else"));
 
-            // Act
             var result = await _controller.Login(request);
 
-            // Assert
-            var serverError = Assert.IsType<ObjectResult>(result);
-            Assert.Equal(500, serverError.StatusCode);
+            var errorResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, errorResult.StatusCode);
+            var json = JObject.FromObject(errorResult.Value!);
+            Assert.False(json["result"]!.Value<bool>());
+            Assert.Equal("An unexpected error occurred.", json["message"]!.Value<string>());
         }
+
 
         [Fact]
         public void Options_ReturnsOk()
