@@ -4,7 +4,6 @@
 *.suo
 *.user
 *.userosscache
-*.sln.iml
 
 # Node.js
 node_modules/
@@ -23,9 +22,9 @@ yarn-error.log*
 
 # Test results
 /TestResults/
-/AngularAppUnitTest/TestResults/
-AngularAppUnitTest
 AngularApp1.Server/dialogflow-key.json
+AngularAppUnitTest\bin\Debug\net8.0\dialogflow-key.json
+
 # Environment files
 .env
 .env.local
@@ -36,6 +35,7 @@ AngularApp1.Server/dialogflow-key.json
 # Debug logs
 *.log
 logs/
+
 
 # Docker
 docker-compose.override.yml
