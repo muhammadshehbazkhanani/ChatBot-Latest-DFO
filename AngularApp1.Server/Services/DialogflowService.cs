@@ -1,7 +1,6 @@
 ﻿using Google.Cloud.Dialogflow.V2;
 using Google.Protobuf.WellKnownTypes;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using AngularApp1.Server.Models.Responses;
 using AngularApp1.Server.Services.Interfaces;
 using AngularApp1.Server.Enums;
@@ -15,8 +14,6 @@ namespace AngularApp1.Server.Services
         private readonly SessionsClient _sessionsClient;
         private readonly ILogger<DialogflowService> _logger;
         private const string DebugCommand = "debugStandardBotExchangeCustomInput";
-        private const string BranchOverrideCommand = "debugStandardBotBranchOverride";
-        private const string VoiceBotOverrideIntent = "StandardBotBranchOverride";
 
         public DialogflowService(
             IConfiguration configuration,

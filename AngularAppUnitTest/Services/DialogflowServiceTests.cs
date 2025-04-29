@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AngularApp1.Server.Services;
-using AngularApp1.Server.Models.Responses;
+﻿using AngularApp1.Server.Services;
 using Google.Cloud.Dialogflow.V2;
-using Google.Protobuf.Collections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
 
 namespace AngularAppUnitTest.Services
 {

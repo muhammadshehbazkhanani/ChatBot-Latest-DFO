@@ -1,15 +1,11 @@
-﻿using AngularApp1.Server.Controllers;
-using AngularApp1.Server.Models.Responses;
+﻿using AngularApp1.Server.Models.Responses;
 using AngularApp1.Server.Models.Requests;
 using AngularApp1.Server.Services.Interfaces;
 using Google.Cloud.Dialogflow.V2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.IO;
 using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace AngularAppUnitTest.Controllers
 {

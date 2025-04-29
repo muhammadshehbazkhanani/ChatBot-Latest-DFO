@@ -1,19 +1,14 @@
-﻿using AngularApp1.Server.Models;
-using AngularApp1.Server.Models.Requests;
-using AngularApp1.Server.Models.Responses;
+﻿using AngularApp1.Server.Models.Requests;
 using AngularApp1.Server.Repositories.Interfaces;
 using AngularApp1.Server.Services;
 using AngularApp1.Server.Services.Interfaces;
 using Moq;
-using System;
-using System.Threading.Tasks;
-using Xunit;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using AngularApp1.Server.Models.Entities;
 using AngularApp1.Server.Exceptions;
 
-namespace AngularApp1.Server.Tests
+namespace AngularAppUnitTest.Tests
 {
     public class AuthServiceTests
     {

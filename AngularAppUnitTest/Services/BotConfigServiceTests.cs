@@ -1,7 +1,4 @@
-﻿using Xunit;
-using Moq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Moq;
 using AngularApp1.Server.Models.Entities;
 using AngularApp1.Server.Services;
 using AngularApp1.Server.Repositories.Interfaces;
